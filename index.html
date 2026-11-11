@@ -154,6 +154,50 @@
   .rsvp-frame { display: block; width: 100%; border: 0; min-height: 760px; background: #fff; }
   .rsvp-fallback { text-align: center; margin: 16px 0 0; font-size: .9rem; color: var(--muted); }
 
+  /* Bildgalleri */
+  .gallery { position: relative; max-width: 760px; margin: 0 auto; }
+  .g-track {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    gap: 16px; padding: 4px 2px 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .g-track::-webkit-scrollbar { display: none; }
+  .g-slide {
+    flex: 0 0 100%; scroll-snap-align: center; margin: 0; background: var(--card);
+    border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 2px;
+    padding: 10px 10px 14px; box-shadow: 0 14px 34px -22px rgba(60,75,50,.45);
+  }
+  /* Ramen har fast höjd så att sidan inte hoppar, men bilden beskärs aldrig (contain). */
+  .g-frame, .g-ph { height: clamp(320px, 68vh, 560px); }
+  .g-frame {
+    position: relative; overflow: hidden; width: 100%; background: var(--sage-100);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .g-frame::before {   /* suddig version av samma bild fyller sidorna */
+    content: ""; position: absolute; inset: -24px; background: var(--bgimg) center / cover no-repeat;
+    filter: blur(24px) saturate(.9); opacity: .55;
+  }
+  .g-img { position: relative; display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+  .g-ph {
+    width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--sage-50), var(--sage-100)); color: var(--accent-dark); text-align: center; padding: 20px;
+  }
+  .g-ph svg { width: 54px; height: 54px; fill: var(--accent); opacity: .8; margin-bottom: 10px; }
+  .g-ph span { font-family: var(--serif); font-style: italic; font-size: 1.3rem; }
+  .g-ph small { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+  .g-slide figcaption { text-align: center; font-family: var(--serif); font-style: italic; font-size: 1.25rem; color: var(--deep); padding-top: 12px; min-height: 1.5em; }
+  .g-btn {
+    position: absolute; top: calc(50% - 40px); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line);
+    background: rgba(255,255,255,.92); color: var(--accent-dark); font-size: 1.5rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px -8px rgba(60,75,50,.5); transition: background .2s, color .2s;
+  }
+  .g-btn:hover { background: var(--accent-dark); color: #fff; }
+  .g-btn.prev { left: -14px; } .g-btn.next { right: -14px; }
+  .g-dots { display: flex; justify-content: center; gap: 9px; margin-top: 8px; flex-wrap: wrap; }
+  .g-dots button { width: 9px; height: 9px; border-radius: 50%; border: 0; padding: 0; background: var(--line); cursor: pointer; transition: background .2s, transform .2s; }
+  .g-dots button.on { background: var(--accent-dark); transform: scale(1.25); }
+  .g-count { text-align: center; color: var(--muted); font-size: .8rem; letter-spacing: .2em; margin-top: 10px; }
+  @media (max-width: 520px) { .g-btn.prev { left: 4px; } .g-btn.next { right: 4px; } }
+
   footer { position: relative; overflow: hidden; background: var(--deep); color: #eef1e8; text-align: center; padding: 80px 24px 70px; }
   footer .inner { position: relative; z-index: 1; }
   footer .big { font-family: var(--serif); font-style: italic; font-size: clamp(1.8rem, 6vw, 2.6rem); line-height: 1.2; }
@@ -185,7 +229,7 @@
   <div class="box">
     <div class="kicker">Bröllop</div>
     <h1>Alice <em>&amp;</em> David</h1>
-    <div class="date">19 juni 2027</div>
+    <!--div class="date">19 juni 2027</div-->
     <p>Skriv in lösenordet från din inbjudan.</p>
     <form id="gateForm" autocomplete="off">
       <input type="password" id="pw" placeholder="Lösenord" aria-label="Lösenord" autofocus>
@@ -203,7 +247,8 @@
     <a class="l" href="#schedule">Program</a>
     <a class="l" href="#travel">Resa &amp; boende</a>
     <a class="l" href="#rsvp">OSA</a>
-    <a class="l" href="#faq">Bra att veta</a>
+    <a class="l" href="#gallery">Bilder</a>
+    <!--a class="l" href="#faq">Bra att veta</a-->
   </nav>
 
   <header class="hero" id="top">
@@ -231,7 +276,7 @@
       <div class="grid">
         <div class="card reveal"><div class="num"></div><h3>Vigsel</h3><p>Kl. 16:00 Vassunda Kyrka <br>Vassunda 523, 74191, Knivsta</p></div>
         <div class="card reveal"><div class="num"></div><h3>Middag &amp; fest</h3><p>Mingel, middag och fest på Krusenberg Herrgård, med start ca kl. 17:00.</p></div>
-        <div class="card reveal"><div class="num"></div><h3>Klädkod</h3><p>Mörkkostym/Kavaj</p></div>
+        <div class="card reveal"><div class="num"></div><h3>Klädkod</h3><p>Mörk kostym/Kavaj</p></div>
       </div>
     </div>
   </section>
@@ -245,7 +290,7 @@
         <div class="divider"></div>
       </div>
       <ul class="timeline">
-        <li class="reveal"><time>15:45</time><strong>Gästerna anländer till kyrkan</strong><small></small></li>
+        <li class="reveal"><time>15:30</time><strong>Gästerna anländer till kyrkan</strong><small></small></li>
         <li class="reveal"><time>16:00</time><strong>Vigsel</strong></li>
         <li class="reveal"><time>17:00</time><strong>Mingel &amp; fotografering</strong><small>Tilltugg och dryck vid herrgården</small></li>
         <li class="reveal"><time>18:30</time><strong>Middag</strong></li>
@@ -264,8 +309,8 @@
         <div class="divider"></div>
       </div>
       <div class="grid">
-        <div class="card reveal"><h3>Hitta hit</h3><p>Vigseln: Vassunda 523, 74191, Knivsta  <br>
-          Festen: Krusenberg Herrgård, Krusenberg 436, 741 76 Uppsala</p></div>
+        <div class="card reveal"><h3>Hitta hit</h3><p>Vigsel: Vassunda 523, 74 191, Knivsta  <br>
+          Middag: Krusenberg Herrgård, Krusenberg 436, 741 76 Uppsala</p></div>
         <div class="card reveal"><h3>Boende</h3><p>Vi ser gärna att ni sover kvar på herrgården med oss så att vi kan fira vårt bröllop till max!</p></div>
       </div>
     </div>
@@ -285,6 +330,24 @@
       <p class="rsvp-fallback">Laddas inte formuläret? <a id="rsvpLink" href="#" target="_blank" rel="noopener">Öppna det i en ny flik</a>.</p>
     </div>
   </section>
+  <section id="gallery">
+    <div class="wrap">
+      <div class="head reveal">
+        <div class="eyebrow">Minnen</div>
+        <h2>Bilder</h2>
+        <p class="sub">Bläddra bland några av våra favoriter</p>
+        <div class="divider"></div>
+      </div>
+      <div class="gallery reveal" id="gallery-box" role="region" aria-roledescription="bildspel" aria-label="Bilder på Alice och David">
+        <button class="g-btn prev" id="gPrev" type="button" aria-label="Föregående bild">&#8249;</button>
+        <div class="g-track" id="gTrack" tabindex="0"></div>
+        <button class="g-btn next" id="gNext" type="button" aria-label="Nästa bild">&#8250;</button>
+        <div class="g-dots" id="gDots"></div>
+        <div class="g-count" id="gCount" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
 <!--
   <section id="faq">
     <div class="wrap">
@@ -329,7 +392,24 @@ const CONFIG = {
 
   // Valfritt foto som bakgrund högst upp på sidan, t.ex. "bild.jpg"
   // (filen ska ligga i samma mapp som index.html). Lämna "" för bladdekorationen.
-  heroImage: ""
+  heroImage: "",
+
+  // Bilder till galleriet. Lägg bildfilerna i samma mapp som index.html och skriv dem här,
+  // t.ex. { src: "bild1.jpg", text: "Där allt började" }. Lämna listan tom för platshållare.
+  gallery: [
+    { src: "bild1.jpg", text: "" },
+    { src: "bild2.jpg", text: "" },
+    { src: "bild7.jpg", text: "" },
+    { src: "bild3.jpg", text: "" },
+    { src: "bild4.jpg", text: "" },
+    { src: "bild5.jpg", text: "" },
+    { src: "bild8.jpg", text: "" },
+    { src: "bild9.jpg", text: "" },
+    { src: "bild10.jpg", text: "" },
+    { src: "bild11.jpg", text: "" },
+    { src: "bild12.jpg", text: "" },
+    { src: "bild6.jpg", text: "" }
+  ]
 };
 /* ===================================================== */
 
@@ -442,6 +522,50 @@ function setupHeroImage() {
   im.src = CONFIG.heroImage;
 }
 
+function setupGallery() {
+  const track = $("gTrack"), dots = $("gDots"), count = $("gCount");
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const heart = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1.1 4.2 2.4h3.6C14.6 6.1 16 5 18 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+  const items = CONFIG.gallery.length ? CONFIG.gallery : [
+    { ph: "Vår första bild" }, { ph: "Ett fint minne" }, { ph: "Ett roligt ögonblick" }, { ph: "Äventyr tillsammans" }
+  ];
+  track.innerHTML = items.map((it, i) => it.src
+    ? `<figure class="g-slide"><div class="g-frame"><img class="g-img" src="${esc(it.src)}" alt="${esc(it.text || "Bild " + (i + 1))}" ${i ? 'loading="lazy"' : ""}></div><figcaption>${esc(it.text || "")}</figcaption></figure>`
+    : `<figure class="g-slide"><div class="g-ph">${heart}<span>${esc(it.ph)}</span><small>Här kommer en bild</small></div><figcaption></figcaption></figure>`
+  ).join("");
+  dots.innerHTML = items.map((_, i) => `<button type="button" aria-label="Visa bild ${i + 1}"></button>`).join("");
+  const slides = Array.from(track.children), btns = Array.from(dots.children);
+  items.forEach((it, i) => {
+    const f = slides[i].querySelector(".g-frame");
+    if (f && it.src) f.style.setProperty("--bgimg", `url("${it.src.replace(/"/g, "%22")}")`);
+  });
+  let cur = 0;
+  function show(i) {
+    cur = (i + slides.length) % slides.length;
+    track.scrollTo({ left: slides[cur].offsetLeft - track.offsetLeft - (track.clientWidth - slides[cur].clientWidth) / 2, behavior: "smooth" });
+  }
+  function mark(i) {
+    cur = i;
+    btns.forEach((b, k) => b.classList.toggle("on", k === i));
+    count.textContent = (i + 1) + " / " + slides.length;
+  }
+  track.addEventListener("scroll", () => {
+    let best = 0, bd = Infinity; const mid = track.scrollLeft + track.clientWidth / 2;
+    slides.forEach((s, k) => { const d = Math.abs(s.offsetLeft - track.offsetLeft + s.clientWidth / 2 - mid); if (d < bd) { bd = d; best = k; } });
+    if (best !== cur || !btns[best].classList.contains("on")) mark(best);
+  }, { passive: true });
+  $("gPrev").addEventListener("click", () => show(cur - 1));
+  $("gNext").addEventListener("click", () => show(cur + 1));
+  btns.forEach((b, k) => b.addEventListener("click", () => show(k)));
+  track.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") { e.preventDefault(); show(cur - 1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); show(cur + 1); }
+  });
+  const one = slides.length < 2;
+  $("gPrev").style.display = $("gNext").style.display = dots.style.display = count.style.display = one ? "none" : "";
+  mark(0);
+}
+
 function setupReveal() {
   const els = document.querySelectorAll(".reveal");
   if (!("IntersectionObserver" in window)) { els.forEach(e => e.classList.add("in")); return; }
@@ -484,6 +608,7 @@ function unlock() {
   setupRsvp();
   startCountdown();
   setupHeroImage();
+  setupGallery();
   setupReveal();
 }
 
